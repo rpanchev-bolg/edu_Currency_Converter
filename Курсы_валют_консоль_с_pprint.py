@@ -2,6 +2,7 @@ import requests
 import json
 import pprint
 
+
 # настраиваем PrettyPrinter
 # Очень полезная штука, разбивает вложения json на форматированные блоки
 p = pprint.PrettyPrinter(indent=4)  # indent=4 - значит отступ в 4 пробела
