@@ -6,9 +6,15 @@ import requests
 
 def update_currency_label(event):
     # Получаем полное название валюты из словаря и обновляем метку
-    code = target_combobox.get()
-    name = currencies[code]
-    currency_label.config(text=name)
+    match event.widget.winfo_name():
+        case 'base_label':
+            code = base_combobox.get()
+            name = currencies[code]
+            b_label.config(text=name)
+        case 'target_label':
+            code = target_combobox.get()
+            name = currencies[code]
+            t_label.config(text=name)
 
 
 def exchange():
@@ -44,19 +50,25 @@ currencies = {"USD": "Американский доллар", "EUR": "Евро",
 # Создание графического интерфейса
 window = Tk()
 window.title("Курс обмена валюты")
-window.geometry("360x220")
+window.geometry("360x240")
 
 Label(text="Базовая валюта:").pack(padx=10, pady=(10, 2))
-base_combobox = ttk.Combobox(values=list(currencies.keys()))
+base_combobox = ttk.Combobox(width=12, values=list(currencies.keys()),
+                             name='base_label')
 base_combobox.pack(padx=10, pady=(0, 5))
+base_combobox.bind("<<ComboboxSelected>>", update_currency_label)
+
+b_label = ttk.Label()
+b_label.pack(padx=10, pady=(0,10))
 
 Label(text="Целевая валюта:").pack(padx=10, pady=(10, 2))
-target_combobox = ttk.Combobox(values=list(currencies.keys()))
+target_combobox = ttk.Combobox(width=12, values=list(currencies.keys()),
+                               name='target_label')
 target_combobox.pack(padx=10, pady=(0, 5))
 target_combobox.bind("<<ComboboxSelected>>", update_currency_label)
 
-currency_label = ttk.Label()
-currency_label.pack(padx=10, pady=(0, 10))
+t_label = ttk.Label()
+t_label.pack(padx=10, pady=(0, 10))
 
 Button(text="Получить курс обмена", command=exchange).pack(padx=10, pady=10)
 
